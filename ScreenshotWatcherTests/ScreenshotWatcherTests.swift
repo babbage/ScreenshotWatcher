@@ -33,7 +33,7 @@ func testB_defaultOnDisplayAction_callsSuppliedScreenshotAction_whenScreenshotNo
     )
 
     // Initiate the process created by the onDisplay action
-    Task { await actions.onDisplay() }
+    let asyncSequence = Task { await actions.onDisplay() }
     
     // Post the notification created when a screenshot occurs.
     _ = await MainActor.run {
@@ -43,7 +43,8 @@ func testB_defaultOnDisplayAction_callsSuppliedScreenshotAction_whenScreenshotNo
     }
     
     // Test expectations
-    await self.waitForExpectations(timeout: 10)
+    await self.waitForExpectations(timeout: 1)
+    asyncSequence.cancel()
 }
 
 func testC_onDisplayActionIsCalled_whenContentViewIsDisplayed() async {
